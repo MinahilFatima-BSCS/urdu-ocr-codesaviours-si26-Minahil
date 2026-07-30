@@ -237,8 +237,6 @@ The Gradio web application allows users to:
 - Extract Urdu text
 - Display the recognized output instantly
 
-*(Insert your application screenshot here.)*
-
 ---
 <img width="1917" height="892" alt="App Working" src="https://github.com/user-attachments/assets/b6d72e03-610f-44e6-97c8-0c1b7ee6b96d" />
 
