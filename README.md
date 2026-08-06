@@ -1,4 +1,4 @@
-# Urdu OCR — A Fine-Tuned TrOCR Model for Extracting Printed Urdu Text
+# Urdu OCR — Printed Urdu Text Extraction Using Tesseract OCR
 
 Built during the Code Saviours ML/AI Internship (SI-26)
 
@@ -6,9 +6,11 @@ Built during the Code Saviours ML/AI Internship (SI-26)
 
 # Project Overview
 
-Urdu OCR is a deep learning project that extracts printed Urdu text from images using Microsoft's TrOCR (Transformer-based Optical Character Recognition) model. The model has been fine-tuned on a custom Urdu dataset collected from multiple real-world sources.
+Urdu OCR is an OCR-based project that extracts printed Urdu text from images using **Tesseract OCR with Urdu language support**.
 
-Unlike traditional OCR systems, this project focuses specifically on Urdu, a cursive language that presents unique recognition challenges due to connected characters, varying fonts, and complex ligatures.
+The project uses image preprocessing techniques with OpenCV and Tesseract OCR to convert Urdu image content into editable digital text.
+
+Unlike English OCR, Urdu text recognition presents unique challenges due to connected characters, different letter shapes, varying fonts, and complex ligatures.
 
 ---
 
@@ -16,66 +18,60 @@ Unlike traditional OCR systems, this project focuses specifically on Urdu, a cur
 
 Optical Character Recognition (OCR) converts text from images into editable digital text. While OCR performs well for English, Urdu remains a difficult language because of:
 
-- Connected cursive writing
-- Multiple letter shapes
-- Similar-looking characters
-- Different writing styles
-- Low-quality scanned documents
+* Connected cursive writing
+* Multiple letter shapes
+* Similar-looking characters
+* Different writing styles
+* Low-quality scanned documents
 
-This project aims to improve Urdu text recognition using a Transformer-based OCR model.
+This project aims to improve Urdu text extraction using OCR techniques with Urdu language support.
 
 ### Real-world Applications
 
-- Digitizing historical Urdu books
-- Newspaper digitization
-- Government document processing
-- Educational resources
-- Library archives
-- Digital record management
+* Digitizing historical Urdu books
+* Newspaper digitization
+* Government document processing
+* Educational resources
+* Library archives
+* Digital record management
 
 ---
 
 # How It Works
 
-This project uses **Microsoft TrOCR (Transformer OCR)**, a Vision Transformer (ViT) based OCR model.
-
-Instead of recognizing characters one by one like traditional OCR systems, TrOCR learns visual patterns directly from images and generates complete text using a Transformer decoder.
-
-### Fine-Tuning
-
-The original **microsoft/trocr-base-printed** model was fine-tuned using a custom Urdu dataset consisting of printed Urdu images collected from multiple sources.
+This project uses **Tesseract OCR** with Urdu language support for printed Urdu text recognition.
 
 The workflow is:
 
 1. Upload an Urdu image
-2. Image is preprocessed
-3. TrOCR extracts image features
-4. Transformer decoder predicts Urdu text
-5. Extracted text is displayed in the Gradio interface
+2. Image is loaded using OpenCV
+3. Image is converted into grayscale format
+4. Preprocessed image is passed to Tesseract OCR
+5. Tesseract recognizes Urdu text
+6. Extracted text is displayed in the Streamlit interface
 
-This allows the model to recognize Urdu text more effectively than general-purpose OCR systems such as Tesseract.
+The OCR pipeline uses the Urdu language model (`urd`) to improve printed Urdu text recognition.
 
 ---
 
 # Technologies Used
 
-- Python
-- PyTorch
-- Hugging Face Transformers
-- Microsoft TrOCR
-- Google Colab
-- Gradio
-- GitHub
-- Hugging Face Spaces
-- Pillow
+* Python
+* OpenCV
+* Tesseract OCR
+* pytesseract
+* Streamlit
+* Google Colab
+* GitHub
+* Pillow
 
 ---
 
 # Live Demo
 
-### Hugging Face Space
+### Streamlit Application
 
-https://huggingface.co/spaces/Minahil-BSCS/urdu-ocr-codesaviours-si26-Minahil
+https://m59vvf3kggcbxpiqrjyguz.streamlit.app/
 
 ### GitHub Repository
 
@@ -106,10 +102,10 @@ pip install -r requirements.txt
 ### Run the Application
 
 ```bash
-python app.py
+streamlit run app.py
 ```
 
-After running the application, Gradio will generate a local URL where you can upload an Urdu image and receive the extracted text.
+After running the application, Streamlit will generate a local URL where you can upload an Urdu image and receive the extracted text.
 
 ---
 
@@ -119,125 +115,131 @@ The dataset contains **180 printed Urdu images** collected from different real-w
 
 ### Sources
 
-- Kaggle Urdu OCR Dataset
-- Jang Newspaper
-- Dawn Newspaper
-- Urdu Books
-- Urdu Signboards
-- Synthetic Urdu Images
+* Kaggle Urdu OCR Dataset
+* Jang Newspaper
+* Dawn Newspaper
+* Urdu Books
+* Urdu Signboards
+* Synthetic Urdu Images
 
 ### Dataset Variety
 
 The dataset includes:
 
-- Different Urdu fonts
-- Multiple font sizes
-- Newspaper articles
-- Printed book pages
-- Signboards
-- Clean and noisy images
-- Simple and complex layouts
+* Different Urdu fonts
+* Multiple font sizes
+* Newspaper articles
+* Printed book pages
+* Signboards
+* Clean and noisy images
+* Simple and complex layouts
 
-This diversity helps improve the model's ability to generalize across different printed Urdu documents.
+This diversity helps evaluate OCR performance across different printed Urdu documents.
 
 ---
 
-# Model Training
+# OCR Implementation
 
-### Base Model
+### OCR Engine
 
 ```
-microsoft/trocr-base-printed
+Tesseract OCR
 ```
 
-### Training Configuration
+### Urdu Language Support
 
-| Parameter | Value |
-|-----------|-------|
-| Epochs | 3 |
-| Framework | PyTorch |
-| Model | TrOCR |
-| Platform | Google Colab |
+Tesseract Urdu language model:
 
-### Training Loss
+```
+urd
+```
 
-| Epoch | Average Loss |
-|--------|--------------|
-| 1 | 1.7064 |
-| 2 | 0.4783 |
-| 3 | 0.4818 |
+### Image Processing
 
-The training loss decreased significantly after the first epoch, indicating that the model successfully learned Urdu text patterns during fine-tuning.
+The image preprocessing workflow includes:
+
+* Reading image using OpenCV
+* Converting image to grayscale
+* Improving image readability
+* Extracting Urdu text using pytesseract
+
+Example:
+
+```python
+text = pytesseract.image_to_string(
+    gray,
+    lang="urd",
+    config="--psm 6"
+)
+```
 
 ---
 
 # Results
 
-The fine-tuned TrOCR model successfully extracts printed Urdu text from many test images through the Gradio application.
+The Urdu OCR system successfully extracts printed Urdu text from multiple test images through the Streamlit application.
 
-Compared with the baseline Tesseract OCR, the fine-tuned model produces noticeably better recognition on printed Urdu text.
+The system performs well on clear printed Urdu documents. However, recognition accuracy depends on:
 
-Although the project achieved promising qualitative results, there is still room for improvement. With a larger dataset, more training epochs, and additional preprocessing techniques, the recognition accuracy can be further improved.
+* Image quality
+* Font style
+* Text layout
+* Noise level
+
+Although the project achieved promising results, further improvements can be achieved using advanced preprocessing techniques and deep learning-based OCR models.
 
 Future improvements include:
 
-- Larger Urdu dataset
-- More fine-tuning epochs
-- Better image preprocessing
-- Character Error Rate (CER) evaluation
-- Word Error Rate (WER) evaluation
-- Handwritten Urdu OCR support
+* Larger Urdu dataset
+* Better image preprocessing
+* Character Error Rate (CER) evaluation
+* Word Error Rate (WER) evaluation
+* Handwritten Urdu OCR support
 
 ---
 
 # Gap Analysis
 
-## Baseline: Tesseract OCR
+## Baseline: Traditional OCR Challenges
 
-During testing, Tesseract struggled to recognize Urdu text correctly.
+During testing, OCR performance was affected by:
 
-Common issues included:
+* Incorrect character recognition
+* Missing characters
+* Complex Urdu layouts
+* Font variations
+* Low-quality images
 
-- Incorrect words
-- Missing characters
-- Blank outputs
-- Poor handling of connected Urdu script
-- Failure on complex layouts
+Some images produced incomplete or incorrect OCR output.
 
-Examples observed:
-
-- "نجی" → "تجی"
-- "طالبہ" → "طاليه"
-
-Some images produced no OCR output at all.
-
-These results demonstrate that traditional OCR engines are not well suited for Urdu.
+These results show that Urdu OCR remains challenging due to the complexity of Urdu script.
 
 ---
 
-# Why TrOCR Performs Better
+# Why Urdu OCR is Challenging
 
-TrOCR is a Transformer-based OCR model that learns contextual information rather than recognizing isolated characters.
+Urdu text recognition is difficult because:
 
-Advantages include:
+* Characters are connected
+* Same letters have different shapes
+* Fonts vary significantly
+* Printed quality affects recognition
 
-- Better handling of connected Urdu characters
-- Improved recognition of complete words
-- More robust to different fonts
-- Better performance on printed Urdu documents
+Improving preprocessing and using specialized OCR models can enhance recognition accuracy.
 
 ---
 
 # Application Interface
 
-The Gradio web application allows users to:
+The Streamlit web application allows users to:
 
-- Upload a printed Urdu image
-- Process the image
-- Extract Urdu text
-- Display the recognized output instantly
+* Upload a printed Urdu image
+* Process the image
+* Extract Urdu text
+* Display the recognized output instantly
 
 ---
+
 <img width="1917" height="892" alt="App Working" src="https://github.com/user-attachments/assets/b6d72e03-610f-44e6-97c8-0c1b7ee6b96d" />
 
 # Project Structure
@@ -250,7 +252,6 @@ urdu-ocr-codesaviours-si26-Minahil
 ├── README.md
 ├── data/
 ├── notebooks/
-├── model/
 └── assets/
 ```
 
@@ -259,23 +260,23 @@ urdu-ocr-codesaviours-si26-Minahil
 # Requirements
 
 ```
-transformers==4.35.0
-torch==2.0.1
-gradio==3.50.0
-Pillow==10.0.0
+opencv-python
+pytesseract
+streamlit
+Pillow
 ```
 
 ---
 
 # Future Improvements
 
-- Increase dataset size
-- Improve preprocessing
-- Evaluate using CER and WER
-- Fine-tune for more epochs
-- Support handwritten Urdu
-- Improve recognition for noisy images
-- Deploy optimized inference
+* Increase dataset size
+* Improve preprocessing
+* Evaluate using CER and WER
+* Use deep learning-based OCR models
+* Support handwritten Urdu
+* Improve recognition for noisy images
+* Deploy optimized inference
 
 ---
 
